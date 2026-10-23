@@ -2,7 +2,7 @@ from datetime import datetime
 
 from models.history import History
 from models.news import News
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -56,3 +56,17 @@ async def get_history_list(
     )
     res = await db.execute(query)
     return res.all(), total
+
+
+async def remove_history(db: AsyncSession, history_id: int, user_id: int):
+    query = delete(History).where(History.id == history_id, History.user_id == user_id)
+    res = await db.execute(query)
+    await db.commit()
+    return res.rowcount > 0
+
+
+async def remove_all_history(db: AsyncSession, user_id: int):
+    query = delete(History).where(History.user_id == user_id)
+    res = await db.execute(query)
+    await db.commit()
+    return res.rowcount > 0

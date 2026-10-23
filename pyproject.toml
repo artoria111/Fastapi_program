@@ -8,6 +8,7 @@ dependencies = [
     "aiomysql>=0.3.2",
     "fastapi[standard]>=0.142.4",
     "passlib[bcrypt]>=1.7.4",
+    "redis>=8.1.0",
     "sqlalchemy[asyncio]>=2.0.54",
 ]
 

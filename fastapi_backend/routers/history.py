@@ -2,11 +2,12 @@ from datetime import datetime
 
 from config.db_conf import get_db
 from crud import history
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from models.users import User
 from schemas.base import NewsItemBase
 from schemas.history import HistoryAddRequest, HistoryListResponse, HistoryResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 from utils.auth import get_current_user
 from utils.response import success_response
 
@@ -51,3 +52,32 @@ async def get_history_list(
         list=history_list, total=total, hasMore=has_more
     )
     return success_response(message="获取历史列表成功", data=response_data)
+
+
+@router.delete("/delete/{history_id}")
+async def delete_history(
+    history_id: int,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    res = await history.remove_history(db, history_id, user.id)
+    if not res:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="历史记录不存在",
+        )
+    return success_response(message="删除历史成功")
+
+
+@router.delete("/clear")
+async def clear_history(
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    res = await history.remove_all_history(db, user.id)
+    if not res:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="历史记录不存在",
+        )
+    return success_response(message="清空历史成功")

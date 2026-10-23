@@ -1,5 +1,5 @@
 from config.db_conf import get_db
-from crud import news
+from crud import news, news_cache
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api/news", tags=["news"])
 async def get_categories(
     skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
 ):
-    categories = await news.get_categories(db, skip, limit)
+    categories = await news_cache.get_categories(db, skip, limit)
     return {"code": 200, "message": "获取新闻分类成功", "data": categories}
 
 
@@ -22,7 +22,7 @@ async def get_news_list(
     db: AsyncSession = Depends(get_db),
 ):
     offset = (page - 1) * page_size
-    news_list = await news.get_news_list(db, category_id, offset, page_size)
+    news_list = await news_cache.get_news_list(db, category_id, offset, page_size)
     total = await news.get_news_count(db, category_id)
     hasMore = (offset + len(news_list)) < total
     return {
