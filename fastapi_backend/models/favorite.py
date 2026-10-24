@@ -28,7 +28,7 @@ class Favorite(Base):
         Integer, ForeignKey(News.id), nullable=False, comment="新闻ID"
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, nullable=False, comment="收藏时间"
+        DateTime, default=datetime.now, nullable=False, comment="收藏时间"
     )
 
     def __repr__(self):

@@ -253,3 +253,6 @@ Token 在注册或登录成功后返回，有效期 7 天。
 4. `Exception` — 兜底，捕获所有未处理的异常
 
 开发模式下（`DEBUG_MODE = True`），错误响应会包含详细堆栈信息，方便调试。
+
+## 接入AI助手
+AI助手被直接实现在了前端，与后端运行无关，可以修改`news-headline-frontend/src/config/api.js`中的`apiEndpoint`和`apiKey`来接入想要的模型
