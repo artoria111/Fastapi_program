@@ -16,7 +16,7 @@
 ## 项目结构
 
 ```
-news-headline-backend/
+fastapi-backend/
 ├── main.py                  # 应用入口，创建 FastAPI 实例、注册路由和中间件
 ├── requirements.txt         # 项目依赖
 │
@@ -64,8 +64,6 @@ news-headline-backend/
 │
 ├── db/
 │   └── database.sql         # 数据库建表 SQL 脚本（含测试数据）
-│
-└── .venv/                   # 虚拟环境（不提交到 Git）
 ```
 
 ## 环境准备
@@ -125,10 +123,11 @@ REDIS_HOST = "localhost"
 REDIS_PORT = 6379
 ```
 
-## 运行项目
+## 运行后端项目
 
 ```bash
 # 确保虚拟环境已激活
+cd fastapi_backend
 uvicorn main:app --reload
 ```
 
@@ -137,6 +136,13 @@ uvicorn main:app --reload
 ```
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process
+```
+
+## 运行前端项目
+```bash
+# 确保虚拟环境已激活
+cd news-headline-frontend
+npm run dev
 ```
 
 ## API 文档
